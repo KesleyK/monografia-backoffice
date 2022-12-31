@@ -4,26 +4,23 @@ const styles = {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "common.white",
+        backgroundColor: "primary.dark"
     },
     card: {
         width: "30%",
         backgroundColor: "common.white",
         boxShadow: "rgba(0,0,0,.4) 0 2px 5px",
         borderRadius: "3px",
-        padding: "50px",
-    },
-    input: {
-        margin: "5px 0",
+        padding: "50px"
     },
     button: {
-        backgroundColor: "secondary.main",
-        marginTop: "20px",
+        backgroundColor: "primary.dark",
+        marginTop: "10px",
 
         "&:hover": {
-            backgroundColor: "secondary.dark",
-        },
-    },
+            backgroundColor: "primary.main"
+        }
+    }
 };
 
 export default styles;

@@ -1,11 +1,12 @@
 import { ThemeProvider } from "@mui/material";
-import { Register } from "./containers";
+import { RouterProvider } from "react-router-dom";
+import { router } from "./router/provider";
 import theme from "./styles/theme";
 
 function App() {
     return (
         <ThemeProvider theme={theme}>
-            <Register />
+            <RouterProvider router={router} />
         </ThemeProvider>
     );
 }
