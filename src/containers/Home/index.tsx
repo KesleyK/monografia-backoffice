@@ -1,11 +1,12 @@
 import { Box } from "@mui/material";
+import { Outlet } from "react-router-dom";
 import { ResponsiveDrawer } from "../../components";
 
 export function Home() {
     return (
         <Box>
             <ResponsiveDrawer>
-                <span>Oiw</span>
+                <Outlet />
             </ResponsiveDrawer>
         </Box>
     );

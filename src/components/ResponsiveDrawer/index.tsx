@@ -15,6 +15,8 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import ListSubheader from "@mui/material/ListSubheader";
+import { Link } from "react-router-dom";
+import { generalStack, menuStack } from "../../router/stacks/drawerStack";
 
 const drawerWidth = 240;
 
@@ -32,11 +34,11 @@ export function ResponsiveDrawer(props) {
 
             <List>
                 <ListSubheader>Menu Principal</ListSubheader>
-                {["Tópicos", "Gerenciar Equipes", "Desafios", "Alunos"].map((text, index) => (
-                    <ListItem key={text} disablePadding>
-                        <ListItemButton>
+                {menuStack.map((page, index) => (
+                    <ListItem disablePadding>
+                        <ListItemButton component={Link} to={page.path}>
                             <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                            <ListItemText primary={text} />
+                            <ListItemText primary={page.title} />
                         </ListItemButton>
                     </ListItem>
                 ))}
@@ -44,11 +46,11 @@ export function ResponsiveDrawer(props) {
 
             <List>
                 <ListSubheader>Geral</ListSubheader>
-                {["Perfil"].map((text, index) => (
-                    <ListItem key={text} disablePadding>
-                        <ListItemButton>
+                {generalStack.map((page, index) => (
+                    <ListItem disablePadding>
+                        <ListItemButton component={Link} to={page.path}>
                             <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                            <ListItemText primary={text} />
+                            <ListItemText primary={page.title} />
                         </ListItemButton>
                     </ListItem>
                 ))}
