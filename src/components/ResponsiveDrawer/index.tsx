@@ -35,7 +35,7 @@ export function ResponsiveDrawer(props) {
             <List>
                 <ListSubheader>Menu Principal</ListSubheader>
                 {menuStack.map((page, index) => (
-                    <ListItem disablePadding>
+                    <ListItem key={page.title} disablePadding>
                         <ListItemButton component={Link} to={page.path}>
                             <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
                             <ListItemText primary={page.title} />
@@ -47,7 +47,7 @@ export function ResponsiveDrawer(props) {
             <List>
                 <ListSubheader>Geral</ListSubheader>
                 {generalStack.map((page, index) => (
-                    <ListItem disablePadding>
+                    <ListItem key={page.title} disablePadding>
                         <ListItemButton component={Link} to={page.path}>
                             <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
                             <ListItemText primary={page.title} />
@@ -117,7 +117,14 @@ export function ResponsiveDrawer(props) {
                     {drawer}
                 </Drawer>
             </Box>
-            <Box component="main" sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}>
+            <Box
+                component="main"
+                sx={{
+                    flexGrow: 1,
+                    p: 3,
+                    width: { sm: `calc(100% - ${drawerWidth}px)` }
+                }}
+            >
                 <Toolbar />
                 {props.children}
             </Box>

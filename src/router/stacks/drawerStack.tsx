@@ -1,4 +1,4 @@
-import { AddingTeams } from "../../containers";
+import { AddingTeams } from "../../containers/AddingTeams";
 
 const menuStack = [
     {

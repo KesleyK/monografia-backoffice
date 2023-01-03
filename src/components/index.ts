@@ -1,3 +1,3 @@
 export * from "./ResponsiveDrawer";
-export * from "./ErrorAlert";
+export * from "./Alert";
 export * from "./TexEditor";

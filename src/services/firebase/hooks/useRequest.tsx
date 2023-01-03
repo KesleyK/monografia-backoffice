@@ -1,28 +1,38 @@
 import React, { useState } from "react";
 import { FirebaseErrorCode } from "../enum/errorCode";
-import { ErrorAlert } from "../../components";
+import { Alert } from "../../../components";
 
 interface IRequest {
     handler: () => any;
     onSuccess?: (data) => any;
+    successMessage?: string;
 }
 
 export function useRequest() {
     const [loading, setIsLoading] = useState(false);
     const [responseComponent, setResponseComponent] = useState(null);
 
-    const doRequest = async ({ handler, onSuccess }: IRequest) => {
+    const doRequest = async ({ handler, onSuccess, successMessage }: IRequest) => {
         try {
             setIsLoading(true);
             setResponseComponent(null);
 
             const response = await handler();
-            if (onSuccess) onSuccess(response);
+
+            setIsLoading(false);
+
+            if (!!successMessage) {
+                setResponseComponent(<Alert message={successMessage} />);
+            }
+
+            if (onSuccess) {
+                onSuccess(response);
+            }
         } catch (err) {
             const parsedFirebaseError = FirebaseErrorCode[err.code] ?? FirebaseErrorCode["default/error-message"];
 
             setIsLoading(false);
-            setResponseComponent(<ErrorAlert errorMessage={parsedFirebaseError} />);
+            setResponseComponent(<Alert severity="error" message={parsedFirebaseError} />);
         }
     };
 

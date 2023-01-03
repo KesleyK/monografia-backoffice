@@ -1,10 +1,10 @@
 import { useState, Fragment } from "react";
-import { Alert } from "@mui/material";
+import { Alert as MuiAlert } from "@mui/material";
 import Snackbar from "@mui/material/Snackbar";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 
-export function ErrorAlert(props) {
+export function Alert(props) {
     const [open, setOpen] = useState(true);
 
     const handleClose = (_, reason?: string) => {
@@ -32,9 +32,9 @@ export function ErrorAlert(props) {
             message="Note archived"
             action={action}
         >
-            <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
-                {props.errorMessage}
-            </Alert>
+            <MuiAlert onClose={handleClose} severity={props.severity ?? "success"} sx={{ width: "100%" }}>
+                {props.message}
+            </MuiAlert>
         </Snackbar>
     );
 }
