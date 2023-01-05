@@ -6,9 +6,9 @@ const router = (
     <Router>
         <Routes>
             {providerStack.map((page) => (
-                <Route path={page.path} element={page.element}>
+                <Route key={page.path} path={page.path} element={page.element}>
                     {page.childrens?.map((pageChildren) => (
-                        <Route path={pageChildren.path} element={pageChildren.element} />
+                        <Route key={pageChildren.path} path={pageChildren.path} element={pageChildren.element} />
                     ))}
                 </Route>
             ))}

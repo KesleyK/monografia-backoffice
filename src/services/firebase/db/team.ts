@@ -1,15 +1,21 @@
-import { collection, getDocs, setDoc, doc } from "firebase/firestore";
+import { collection, getDocs, setDoc, doc, query, where } from "firebase/firestore";
 import { db } from "../../../config/firebase";
 import { ITeam } from "../../../models/ITeam";
 
 export default abstract class TeamCollection {
     private static collectionName = "teams";
 
-    static async getAll() {
-        return getDocs(collection(db, this.collectionName));
+    static async getAll(ownerId: string) {
+        const ref = collection(db, this.collectionName);
+        const docsQuery = query(ref, where("ownerId", "==", ownerId));
+
+        return getDocs(docsQuery);
     }
 
-    static post(teamInfo: ITeam): Promise<void> {
-        return setDoc(doc(collection(db, this.collectionName)), teamInfo);
+    static async post(teamInfo: ITeam): Promise<string> {
+        const newTeam = doc(collection(db, this.collectionName));
+        await setDoc(newTeam, teamInfo);
+
+        return newTeam.id;
     }
 }

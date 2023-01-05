@@ -10,8 +10,10 @@ const styles = {
     },
     input: {
         display: "block",
-        marginBottom: 2,
-        marginTop: 1
+        marginBottom: 2
+    },
+    label: {
+        marginBottom: 1
     }
 };
 

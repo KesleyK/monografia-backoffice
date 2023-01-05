@@ -51,7 +51,6 @@ export function Login() {
 
                         <LoadingButton
                             loading={loading}
-                            loadingPosition="start"
                             sx={styles.button}
                             variant="contained"
                             fullWidth
