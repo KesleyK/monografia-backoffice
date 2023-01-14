@@ -34,26 +34,30 @@ export function ResponsiveDrawer(props) {
 
             <List>
                 <ListSubheader>Menu Principal</ListSubheader>
-                {menuStack.map((page, index) => (
-                    <ListItem key={page.title} disablePadding>
-                        <ListItemButton component={Link} to={page.path}>
-                            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                            <ListItemText primary={page.title} />
-                        </ListItemButton>
-                    </ListItem>
-                ))}
+                {menuStack
+                    .filter((page) => !page.hideOnDrawer)
+                    .map((page, index) => (
+                        <ListItem key={page.title} disablePadding>
+                            <ListItemButton component={Link} to={page.path}>
+                                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+                                <ListItemText primary={page.title} />
+                            </ListItemButton>
+                        </ListItem>
+                    ))}
             </List>
 
             <List>
                 <ListSubheader>Geral</ListSubheader>
-                {generalStack.map((page, index) => (
-                    <ListItem key={page.title} disablePadding>
-                        <ListItemButton component={Link} to={page.path}>
-                            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                            <ListItemText primary={page.title} />
-                        </ListItemButton>
-                    </ListItem>
-                ))}
+                {generalStack
+                    .filter((page) => !page.hideOnDrawer)
+                    .map((page, index) => (
+                        <ListItem key={page.title} disablePadding>
+                            <ListItemButton component={Link} to={page.path}>
+                                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+                                <ListItemText primary={page.title} />
+                            </ListItemButton>
+                        </ListItem>
+                    ))}
             </List>
         </div>
     );
@@ -81,7 +85,7 @@ export function ResponsiveDrawer(props) {
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" noWrap component="div">
-                        Responsive drawer
+                        Bem-vindo
                     </Typography>
                 </Toolbar>
             </AppBar>

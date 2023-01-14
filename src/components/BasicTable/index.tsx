@@ -10,12 +10,13 @@ import Paper from "@mui/material/Paper";
 interface ITableRow {
     key: string;
     columns: Array<string>;
+    rowData?: any;
 }
 
 interface IProps {
     labels: Array<string>;
     rows: Array<ITableRow>;
-    onButtonClicked?: (key) => any;
+    onButtonClicked?: (key, rowData) => any;
     buttonComponent?: React.ElementType;
     buttonProps?: any;
 }
@@ -33,22 +34,20 @@ export function BasicTable(props: IProps) {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {props.rows.map(({ key, columns }, columIndex) => (
+                    {props.rows.map(({ key, rowData, columns }, columIndex) => (
                         <TableRow key={columIndex} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
                             {columns.map((column, valueIndex) => (
-                                <React.Fragment key={`${columIndex}-${valueIndex}`}>
-                                    <TableCell>{column}</TableCell>
-
-                                    {props.onButtonClicked ? (
-                                        <TableCell align="right">
-                                            <props.buttonComponent
-                                                onClick={() => props.onButtonClicked(key)}
-                                                {...props.buttonProps}
-                                            />
-                                        </TableCell>
-                                    ) : null}
-                                </React.Fragment>
+                                <TableCell key={`${columIndex}-${valueIndex}`}>{column}</TableCell>
                             ))}
+
+                            {props.onButtonClicked ? (
+                                <TableCell align="right">
+                                    <props.buttonComponent
+                                        onClick={() => props.onButtonClicked(key, rowData)}
+                                        {...props.buttonProps}
+                                    />
+                                </TableCell>
+                            ) : null}
                         </TableRow>
                     ))}
                 </TableBody>

@@ -1,15 +1,24 @@
-import { AddingTeams } from "../../containers/AddingTeams";
+import { Teams } from "../../containers/Teams";
+import { TeamInfo } from "../../containers/TeamInfo";
 
 const menuStack = [
     {
-        path: "/adicionartime",
-        element: <AddingTeams />,
-        title: "Adicionar Equipe"
+        path: "/equipes",
+        element: <Teams />,
+        title: "Equipes",
+        hideOnDrawer: false
+    },
+    {
+        path: "/equipes/info",
+        element: <TeamInfo />,
+        title: "Equipes",
+        hideOnDrawer: true
     },
     {
         path: "/adicionartopico",
         element: <div>Tópico</div>,
-        title: "Adicionar Tópico"
+        title: "Adicionar Tópico",
+        hideOnDrawer: false
     }
 ];
 
@@ -17,7 +26,8 @@ const generalStack = [
     {
         path: "/perfil",
         element: <div>perfil</div>,
-        title: "Perfil"
+        title: "Perfil",
+        hideOnDrawer: false
     }
 ];
 

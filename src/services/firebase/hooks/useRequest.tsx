@@ -21,7 +21,7 @@ export function useRequest() {
 
             setIsLoading(false);
 
-            if (!!successMessage) {
+            if (successMessage) {
                 setResponseComponent(<Alert message={successMessage} />);
             }
 
@@ -29,7 +29,9 @@ export function useRequest() {
                 onSuccess(response);
             }
         } catch (err) {
-            const parsedFirebaseError = FirebaseErrorCode[err.code] ?? FirebaseErrorCode["default/error-message"];
+            console.log(err);
+            const errorCode = err.code ?? "default/error-message";
+            const parsedFirebaseError = FirebaseErrorCode[errorCode];
 
             setIsLoading(false);
             setResponseComponent(<Alert severity="error" message={parsedFirebaseError} />);

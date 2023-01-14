@@ -1,5 +1,92 @@
-import { TextEditor } from "../../components";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Formik } from "formik";
+import { Box, Button, TextField, Typography } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
+import { Search as SearchIcon } from "@mui/icons-material";
+import { BasicTable } from "../../components";
+import { ITeamFormValues, teamInitialValues, teamSchema } from "../../schemas/team";
+import { useRequest } from "../../services/firebase/hooks/useRequest";
+import { retrieveUserInfo } from "../../services/firebase/auth/retrieveUserInfo";
+import { parseCollection } from "../../helpers/collectionUtils";
+import TeamCollection from "../../services/firebase/db/team";
+import styles from "./styles";
 
 export function Teams() {
-    return <TextEditor />;
+    const navigate = useNavigate();
+    const [teams, setTeams] = useState([]);
+    const { doRequest, loading, responseComponent } = useRequest();
+
+    useEffect(() => {
+        retrieveUserInfo().then((user) => {
+            TeamCollection.getAll(user.email).then((values) => {
+                setTeams(parseCollection(values));
+            });
+        });
+    }, []);
+
+    const onFormSubmit = async (formData: ITeamFormValues) =>
+        doRequest({
+            handler: async () => {
+                const user = await retrieveUserInfo();
+                const teamInfo = { name: formData.name, ownerId: user.email, participants: [], topics: [] };
+                const newTeamId = await TeamCollection.post(teamInfo);
+
+                setTeams([...teams, { id: newTeamId, ...teamInfo }]);
+            },
+            successMessage: "Equipe inserida com sucesso"
+        });
+
+    const tableRows = teams.map((team) => ({
+        key: team.id,
+        columns: [team.name],
+        rowData: team
+    }));
+
+    return (
+        <Box sx={styles.container}>
+            <Box sx={styles.card}>
+                <Typography variant="subtitle2" sx={styles.label}>
+                    Inserir Nova Equipe
+                </Typography>
+                <Formik
+                    initialValues={teamInitialValues}
+                    validationSchema={teamSchema}
+                    validateOnChange={false}
+                    onSubmit={(values) => onFormSubmit(values)}
+                >
+                    {({ handleChange, handleSubmit, values, errors }) => (
+                        <Box sx={styles.card}>
+                            <TextField
+                                fullWidth
+                                label="Nome da equipe"
+                                variant="outlined"
+                                type="name"
+                                sx={styles.input}
+                                value={values.name}
+                                onChange={handleChange("name")}
+                                error={!!errors.name}
+                                helperText={errors.name ?? " "}
+                            />
+                            <LoadingButton loading={loading} variant="contained" onClick={() => handleSubmit()}>
+                                Adicionar
+                            </LoadingButton>
+                        </Box>
+                    )}
+                </Formik>
+
+                <Typography variant="subtitle2" sx={styles.label}>
+                    Equipes cadastradas
+                </Typography>
+                <BasicTable
+                    labels={["Times"]}
+                    rows={tableRows}
+                    buttonComponent={Button}
+                    buttonProps={{ children: <SearchIcon /> }}
+                    onButtonClicked={(_, rowData) => navigate("/equipes/info", { state: rowData })}
+                />
+            </Box>
+            {responseComponent}
+        </Box>
+    );
 }

@@ -1,3 +1,3 @@
-export * from "./AddingTeams";
+export * from "./Teams";
 export * from "./Home";
 export * from "./Login";
