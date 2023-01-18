@@ -9,13 +9,14 @@ import Paper from "@mui/material/Paper";
 
 interface ITableRow {
     key: string;
-    columns: Array<string>;
+    columns: string[];
     rowData?: any;
+    disabledButton?: boolean;
 }
 
 interface IProps {
-    labels: Array<string>;
-    rows: Array<ITableRow>;
+    labels: string[];
+    rows: ITableRow[];
     onButtonClicked?: (key, rowData) => any;
     buttonComponent?: React.ElementType;
     buttonProps?: any;
@@ -28,21 +29,26 @@ export function BasicTable(props: IProps) {
                 <TableHead>
                     <TableRow>
                         {props.labels.map((label, index) => (
-                            <TableCell key={index}>{label}</TableCell>
+                            <TableCell key={index} align="center">
+                                {label}
+                            </TableCell>
                         ))}
                         {props.onButtonClicked ? <TableCell></TableCell> : null}
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {props.rows.map(({ key, rowData, columns }, columIndex) => (
+                    {props.rows.map(({ key, rowData, columns, disabledButton }, columIndex) => (
                         <TableRow key={columIndex} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
                             {columns.map((column, valueIndex) => (
-                                <TableCell key={`${columIndex}-${valueIndex}`}>{column}</TableCell>
+                                <TableCell key={`${columIndex}-${valueIndex}`} align="center">
+                                    {column}
+                                </TableCell>
                             ))}
 
                             {props.onButtonClicked ? (
                                 <TableCell align="right">
                                     <props.buttonComponent
+                                        disabled={disabledButton}
                                         onClick={() => props.onButtonClicked(key, rowData)}
                                         {...props.buttonProps}
                                     />

@@ -1,7 +1,8 @@
-import { InvitationStatus } from "./enum/InvitationStatus";
+import { ParticipantStatus } from "./enum/ParticipantStatus";
 
 export interface IParticipant {
     userId: string;
+    teamId: string;
     points: number;
-    invitationStatus: InvitationStatus;
+    status: ParticipantStatus;
 }

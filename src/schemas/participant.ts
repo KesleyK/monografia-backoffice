@@ -1,10 +1,10 @@
 import * as Yup from "yup";
-import { InvitationStatus } from "../models/enum/InvitationStatus";
+import { ParticipantStatus } from "../models/enum/ParticipantStatus";
 
 export interface IParticipantFormValues {
     email: string;
     points: number;
-    invitationStatus: InvitationStatus;
+    status: ParticipantStatus;
 }
 
 export const participantSchema = Yup.object().shape({
@@ -14,5 +14,5 @@ export const participantSchema = Yup.object().shape({
 export const participantInitialValues: IParticipantFormValues = {
     email: "",
     points: 0,
-    invitationStatus: InvitationStatus.PENDING
+    status: ParticipantStatus.PENDING
 };

@@ -1,6 +1,6 @@
-import { DocumentData, QuerySnapshot } from "firebase/firestore";
+import { DocumentData, DocumentSnapshot, QuerySnapshot } from "firebase/firestore";
 
-export const parseCollection = (info: QuerySnapshot<DocumentData>) => {
+export const parseCollection = (info: QuerySnapshot<DocumentData> | DocumentSnapshot<DocumentData>[]) => {
     const arr = [];
 
     info.forEach((doc: DocumentData) => {

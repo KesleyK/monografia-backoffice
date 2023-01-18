@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { Formik } from "formik";
 import { Box, Typography, TextField, Button } from "@mui/material";
@@ -7,27 +7,40 @@ import { Delete as DeleteIcon } from "@mui/icons-material";
 import { BasicTable } from "../../components";
 import { IParticipantFormValues, participantInitialValues, participantSchema } from "../../schemas/participant";
 import { useRequest } from "../../services/firebase/hooks/useRequest";
-import UsersCollection from "../../services/firebase/db/users";
-import TeamCollection from "../../services/firebase/db/team";
 import { CustomError } from "../../helpers/customError";
-import styles from "./styles";
 import { IParticipant } from "../../models/IParticipant";
+import { ParticipantStatus, TranslatedParticipantStatus } from "../../models/enum/ParticipantStatus";
+import { parseCollection } from "../../helpers/collectionUtils";
+import UsersCollection from "../../services/firebase/db/users";
+import TeamsCollection from "../../services/firebase/db/teams";
+import ParticipantsCollection from "../../services/firebase/db/participants";
 
-export function TeamInfo() {
+import styles from "./styles";
+
+export function TeamParticipants() {
     const location = useLocation();
     const team = location.state;
-    const [participants, setParticipants] = useState(location.state.participants);
+    const [participants, setParticipants] = useState([]);
     const { doRequest, loading, responseComponent } = useRequest();
 
-    const onUserDeleted = async (userId: string, userData: IParticipant) =>
+    useEffect(() => {
+        ParticipantsCollection.populateIds(team.participants).then((result) =>
+            setParticipants(parseCollection(result))
+        );
+    }, [team.participants]);
+
+    const onUserDisabled = async (participantId: string, userData: IParticipant) =>
         doRequest({
             handler: async () => {
-                await TeamCollection.deleteParticipant(team.id, userData);
+                userData.status = ParticipantStatus.DISABLED;
+                await ParticipantsCollection.put(participantId, userData);
 
-                const updatedParticipants = participants.filter((participant) => participant.userId !== userId);
+                const updatedParticipants = [...participants];
+                const participantIndex = participants.findIndex((participant) => participant.id === participantId);
+                updatedParticipants[participantIndex] = userData;
                 setParticipants(updatedParticipants);
             },
-            successMessage: "Usuário deletado com sucesso."
+            successMessage: "Usuário desativado com sucesso."
         });
 
     const onFormSubmitted = async (formData: IParticipantFormValues) =>
@@ -49,21 +62,29 @@ export function TeamInfo() {
 
                 const userData = {
                     userId: formData.email,
-                    invitationStatus: formData.invitationStatus,
+                    teamId: team.id,
+                    status: formData.status,
                     points: formData.points
                 };
-                await TeamCollection.insertParticipant(team.id, userData);
 
-                const updatedParticipants = [...participants, userData];
+                const newParticipantId = await ParticipantsCollection.post(userData);
+                await TeamsCollection.insertParticipant(team.id, newParticipantId);
+
+                const updatedParticipants = [...participants, { id: newParticipantId, ...userData }];
                 setParticipants(updatedParticipants);
             },
             successMessage: "Usuário adicionado com sucesso."
         });
 
     const tableRows = participants.map((participant) => ({
-        key: participant.userId,
-        columns: [participant.userId, participant.invitationStatus],
-        rowData: participant
+        key: participant.id,
+        columns: [
+            participant.userId,
+            TranslatedParticipantStatus[participant.status.toUpperCase()],
+            participant.points
+        ],
+        rowData: participant,
+        disabledButton: participant.status === ParticipantStatus.DISABLED
     }));
 
     return (
@@ -84,7 +105,9 @@ export function TeamInfo() {
                 >
                     {({ handleChange, handleSubmit, values, errors }) => (
                         <Box sx={styles.card}>
-                            <Typography variant="subtitle2">Inserir Participante</Typography>
+                            <Typography sx={styles.label} variant="subtitle2">
+                                Inserir Participante
+                            </Typography>
                             <TextField
                                 fullWidth
                                 label="E-mail"
@@ -102,15 +125,15 @@ export function TeamInfo() {
                 </Formik>
 
                 <BasicTable
-                    labels={["Times", "Status"]}
+                    labels={["Participante", "Status", "Pontos"]}
                     rows={tableRows}
                     buttonComponent={Button}
                     buttonProps={{ children: <DeleteIcon /> }}
-                    onButtonClicked={onUserDeleted}
+                    onButtonClicked={onUserDisabled}
                 />
-
-                {responseComponent}
             </Box>
+
+            {responseComponent}
         </Box>
     );
 }

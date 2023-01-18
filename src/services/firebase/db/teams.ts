@@ -1,9 +1,8 @@
-import { collection, getDocs, setDoc, doc, query, where, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
+import { collection, getDocs, setDoc, doc, query, where, updateDoc, arrayUnion } from "firebase/firestore";
 import { db } from "../../../config/firebase";
-import { IParticipant } from "../../../models/IParticipant";
 import { ITeam } from "../../../models/ITeam";
 
-export default abstract class TeamCollection {
+export default abstract class TeamsCollection {
     private static collectionName = "teams";
 
     static async getAll(ownerId: string) {
@@ -20,15 +19,15 @@ export default abstract class TeamCollection {
         return newTeam.id;
     }
 
-    static insertParticipant(id: string, participant: IParticipant) {
+    static insertParticipant(id: string, participantId: string) {
         return updateDoc(doc(collection(db, this.collectionName), id), {
-            participants: arrayUnion(participant)
+            participants: arrayUnion(participantId)
         });
     }
 
-    static deleteParticipant(id: string, participant: IParticipant) {
+    static insertTopic(id: string, topicId: string) {
         return updateDoc(doc(collection(db, this.collectionName), id), {
-            participants: arrayRemove(participant)
+            topics: arrayUnion(topicId)
         });
     }
 }

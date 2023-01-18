@@ -1,5 +1,5 @@
 import { Teams } from "../../containers/Teams";
-import { TeamInfo } from "../../containers/TeamInfo";
+import { TeamDetails } from "../../containers/TeamDetails";
 
 const menuStack = [
     {
@@ -9,15 +9,14 @@ const menuStack = [
         hideOnDrawer: false
     },
     {
-        path: "/equipes/info",
-        element: <TeamInfo />,
-        title: "Equipes",
+        path: "/equipes/detalhes",
+        element: <TeamDetails />,
         hideOnDrawer: true
     },
     {
-        path: "/adicionartopico",
-        element: <div>Tópico</div>,
-        title: "Adicionar Tópico",
+        path: "/relatorios",
+        element: <div>Relatórios</div>,
+        title: "Relatórios",
         hideOnDrawer: false
     }
 ];

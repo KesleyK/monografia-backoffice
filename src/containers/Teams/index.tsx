@@ -9,7 +9,7 @@ import { ITeamFormValues, teamInitialValues, teamSchema } from "../../schemas/te
 import { useRequest } from "../../services/firebase/hooks/useRequest";
 import { retrieveUserInfo } from "../../services/firebase/auth/retrieveUserInfo";
 import { parseCollection } from "../../helpers/collectionUtils";
-import TeamCollection from "../../services/firebase/db/team";
+import TeamsCollection from "../../services/firebase/db/teams";
 import styles from "./styles";
 
 export function Teams() {
@@ -19,7 +19,7 @@ export function Teams() {
 
     useEffect(() => {
         retrieveUserInfo().then((user) => {
-            TeamCollection.getAll(user.email).then((values) => {
+            TeamsCollection.getAll(user.email).then((values) => {
                 setTeams(parseCollection(values));
             });
         });
@@ -29,8 +29,14 @@ export function Teams() {
         doRequest({
             handler: async () => {
                 const user = await retrieveUserInfo();
-                const teamInfo = { name: formData.name, ownerId: user.email, participants: [], topics: [] };
-                const newTeamId = await TeamCollection.post(teamInfo);
+                const teamInfo = {
+                    name: formData.name,
+                    ownerId: user.email,
+                    description: formData.description,
+                    participants: [],
+                    topics: []
+                };
+                const newTeamId = await TeamsCollection.post(teamInfo);
 
                 setTeams([...teams, { id: newTeamId, ...teamInfo }]);
             },
@@ -39,7 +45,7 @@ export function Teams() {
 
     const tableRows = teams.map((team) => ({
         key: team.id,
-        columns: [team.name],
+        columns: [team.name, team.participants.length, team.topics.length],
         rowData: team
     }));
 
@@ -61,12 +67,23 @@ export function Teams() {
                                 fullWidth
                                 label="Nome da equipe"
                                 variant="outlined"
-                                type="name"
                                 sx={styles.input}
                                 value={values.name}
                                 onChange={handleChange("name")}
                                 error={!!errors.name}
                                 helperText={errors.name ?? " "}
+                            />
+                            <TextField
+                                fullWidth
+                                label="Descrição"
+                                variant="outlined"
+                                sx={styles.input}
+                                value={values.description}
+                                onChange={handleChange("description")}
+                                error={!!errors.description}
+                                helperText={errors.description ?? " "}
+                                multiline
+                                rows={4}
                             />
                             <LoadingButton loading={loading} variant="contained" onClick={() => handleSubmit()}>
                                 Adicionar
@@ -79,11 +96,11 @@ export function Teams() {
                     Equipes cadastradas
                 </Typography>
                 <BasicTable
-                    labels={["Times"]}
+                    labels={["Equipe", "Participantes", "Tópicos"]}
                     rows={tableRows}
                     buttonComponent={Button}
                     buttonProps={{ children: <SearchIcon /> }}
-                    onButtonClicked={(_, rowData) => navigate("/equipes/info", { state: rowData })}
+                    onButtonClicked={(_, rowData) => navigate("/equipes/detalhes", { state: rowData })}
                 />
             </Box>
             {responseComponent}

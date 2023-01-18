@@ -6,7 +6,9 @@ import {
     getDoc,
     getDocs,
     QuerySnapshot,
-    setDoc
+    setDoc,
+    updateDoc,
+    arrayUnion
 } from "firebase/firestore";
 import { db } from "../../../config/firebase";
 import { getDateFromSeconds } from "../../../helpers/dateUtils";
@@ -30,6 +32,12 @@ export default abstract class UsersCollection {
 
     static put(id: string, userInfo: IUser): Promise<void> {
         return setDoc(doc(collection(db, this.collectionName), id), userInfo, { merge: true });
+    }
+
+    static insertTeam(id: string, teamId: string) {
+        return updateDoc(doc(collection(db, this.collectionName), id), {
+            participants: arrayUnion(teamId)
+        });
     }
 
     static convert(firestoreSnapshot: DocumentSnapshot<DocumentData>): IUser {

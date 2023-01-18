@@ -29,7 +29,6 @@ export function useRequest() {
                 onSuccess(response);
             }
         } catch (err) {
-            console.log(err);
             const errorCode = err.code ?? "default/error-message";
             const parsedFirebaseError = FirebaseErrorCode[errorCode];
 
