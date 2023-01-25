@@ -8,7 +8,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 
 interface ITableRow {
-    key: string;
+    key: string | number;
     columns: string[];
     rowData?: any;
     disabledButton?: boolean;

@@ -1,10 +1,8 @@
+import { ISubtopic } from "./ISubtopic";
+
 export interface ITopic {
     name: string;
     icon: string;
-    teamId?: string;
-    subtopics: {
-        name: string;
-        description: string;
-        challenges: string[];
-    }[];
+    isSequential?: boolean;
+    subtopics: ISubtopic[];
 }

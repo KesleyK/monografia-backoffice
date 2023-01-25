@@ -1,17 +1,19 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Formik } from "formik";
-import { Box, Typography, TextField } from "@mui/material";
+import { Box, Typography, TextField, FormGroup, FormControlLabel, Switch, Button } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
+import { Search as SearchIcon } from "@mui/icons-material";
 import { BasicTable } from "../../components";
 import { ITopicFormValues, topicSchema, topicInitialValues } from "../../schemas/topic";
 import { useRequest } from "../../services/firebase/hooks/useRequest";
+import { parseCollection } from "../../helpers/collectionUtils";
 import TopicsCollection from "../../services/firebase/db/topics";
 import styles from "./styles";
 import TeamsCollection from "../../services/firebase/db/teams";
-import { parseCollection } from "../../helpers/collectionUtils";
 
 export function TeamTopics() {
+    const navigate = useNavigate();
     const location = useLocation();
     const team = location.state;
     const [topics, setTopics] = useState([]);
@@ -24,20 +26,19 @@ export function TeamTopics() {
     const onFormSubmitted = async (formData: ITopicFormValues) =>
         doRequest({
             handler: async () => {
-                const topicData = { name: formData.name, icon: formData.icon, teamId: team.id, subtopics: [] };
-                const newTopicId = await TopicsCollection.post(topicData);
+                const newTopicId = await TopicsCollection.post(formData);
                 await TeamsCollection.insertTopic(team.id, newTopicId);
 
-                const newTopic = { ...topicData, id: newTopicId };
+                const newTopic = { ...formData, id: newTopicId };
                 const updatedTopics = [...topics, newTopic];
                 setTopics(updatedTopics);
             },
-            successMessage: "Usuário adicionado com sucesso."
+            successMessage: "Tópico adicionado com sucesso."
         });
 
     const tableRows = topics.map((topic) => ({
         key: topic.id,
-        columns: [topic.name, topic.icon],
+        columns: [topic.name, topic.icon, topic.isSequential ? "Sim" : "Não", topic.subtopics.length],
         rowData: topic
     }));
 
@@ -91,6 +92,15 @@ export function TeamTopics() {
                                 </a>
                             </Box>
 
+                            <FormGroup>
+                                <FormControlLabel
+                                    control={
+                                        <Switch checked={values.isSequential} onChange={handleChange("isSequential")} />
+                                    }
+                                    label="Habilitar trilha de aprendizado"
+                                />
+                            </FormGroup>
+
                             <LoadingButton loading={loading} variant="contained" onClick={() => handleSubmit()}>
                                 Adicionar
                             </LoadingButton>
@@ -99,11 +109,11 @@ export function TeamTopics() {
                 </Formik>
 
                 <BasicTable
-                    labels={["Tópico", "Ícone"]}
+                    labels={["Tópico", "Ícone", "Trilha de aprendizado?", "Subtópicos"]}
                     rows={tableRows}
-                    // buttonComponent={Button}
-                    // buttonProps={{ children: <DeleteIcon /> }}
-                    // onButtonClicked={onUserDeleted}
+                    buttonComponent={Button}
+                    buttonProps={{ children: <SearchIcon /> }}
+                    onButtonClicked={(_, rowData) => navigate("/equipes/topicos", { state: { topic: rowData, team } })}
                 />
             </Box>
 

@@ -1,14 +1,17 @@
 import {
-    collection,
-    doc,
     DocumentData,
     DocumentSnapshot,
+    QuerySnapshot,
+    collection,
+    arrayUnion,
+    doc,
     getDoc,
     getDocs,
-    QuerySnapshot,
-    setDoc
+    setDoc,
+    updateDoc
 } from "firebase/firestore";
 import { db } from "../../../config/firebase";
+import { ISubtopic } from "../../../models/ISubtopic";
 import { ITopic } from "../../../models/ITopic";
 
 export default class TopicsCollection {
@@ -32,5 +35,11 @@ export default class TopicsCollection {
         await setDoc(newTopic, data);
 
         return newTopic.id;
+    }
+
+    static insertSubtopic(id: string, subtopicId: string) {
+        return updateDoc(doc(this.ref, id), {
+            subtopics: arrayUnion(subtopicId)
+        });
     }
 }

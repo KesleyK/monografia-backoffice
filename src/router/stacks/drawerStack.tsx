@@ -1,5 +1,7 @@
 import { Teams } from "../../containers/Teams";
 import { TeamDetails } from "../../containers/TeamDetails";
+import { Subtopics } from "../../containers/Subtopics";
+import { Challenges } from "../../containers/Challenges";
 
 const menuStack = [
     {
@@ -11,6 +13,16 @@ const menuStack = [
     {
         path: "/equipes/detalhes",
         element: <TeamDetails />,
+        hideOnDrawer: true
+    },
+    {
+        path: "/equipes/topicos",
+        element: <Subtopics />,
+        hideOnDrawer: true
+    },
+    {
+        path: "/equipes/desafios",
+        element: <Challenges />,
         hideOnDrawer: true
     },
     {
