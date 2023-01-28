@@ -10,6 +10,6 @@ export enum FirebaseErrorCode {
     "auth/user-disabled" = "Usuário desativado",
     "auth/user-not-found" = "Usuário ou senha inválido(s)",
     "auth/wrong-password" = "Usuário ou senha inválido(s)",
-    "auth/email-already-in-use" = "E-mail já cadastrado",
+    "auth/email-already-in-use" = "E-mail já cadastrado na plataforma.",
     "auth/weak-password" = "Senha muito curta"
 }

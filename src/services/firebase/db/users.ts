@@ -11,8 +11,6 @@ import {
     arrayUnion
 } from "firebase/firestore";
 import { db } from "../../../config/firebase";
-import { getDateFromSeconds } from "../../../helpers/dateUtils";
-import { EducationalBackground } from "../../../models/enum/EducationalBackground";
 import { IUser } from "../../../models/IUser";
 
 export default abstract class UsersCollection {
@@ -46,10 +44,7 @@ export default abstract class UsersCollection {
         return {
             name: firestoreData.name,
             email: firestoreData.email,
-            educationalBackground: Object.values(EducationalBackground).find(
-                (s) => s === firestoreData.educationalBackground
-            ),
-            birthDate: getDateFromSeconds(firestoreData.birthDate.seconds),
+            educationalInstitution: firestoreData.educationalInstitution,
             points: firestoreData.points
         };
     }
