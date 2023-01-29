@@ -5,6 +5,7 @@ import { Alert } from "../../../components";
 interface IRequest {
     handler: () => any;
     onSuccess?: (data) => any;
+    onFinally?: () => any;
     successMessage?: string;
 }
 
@@ -12,7 +13,7 @@ export function useRequest() {
     const [loading, setIsLoading] = useState(false);
     const [responseComponent, setResponseComponent] = useState(null);
 
-    const doRequest = async ({ handler, onSuccess, successMessage }: IRequest) => {
+    const doRequest = async ({ handler, onSuccess, successMessage, onFinally }: IRequest) => {
         try {
             setIsLoading(true);
             setResponseComponent(null);
@@ -34,6 +35,10 @@ export function useRequest() {
 
             setIsLoading(false);
             setResponseComponent(<Alert severity="error" message={parsedFirebaseError} />);
+        } finally {
+            if (onFinally) {
+                onFinally();
+            }
         }
     };
 

@@ -5,6 +5,7 @@ import { Challenges } from "../../containers/Challenges";
 import { ChallengeDetails } from "../../containers/ChallengeDetails";
 import { Home } from "../../containers/Home";
 import { Home as HomeIcon, Groups2, AccountCircle } from "@mui/icons-material";
+import { Profile } from "../../containers/Profile";
 
 const menuStack = [
     {
@@ -46,7 +47,7 @@ const menuStack = [
 const generalStack = [
     {
         path: "/perfil",
-        element: <div>perfil</div>,
+        element: <Profile />,
         title: "Perfil",
         hideOnDrawer: false,
         icon: <AccountCircle />
