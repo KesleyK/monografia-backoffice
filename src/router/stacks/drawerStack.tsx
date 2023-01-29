@@ -2,34 +2,44 @@ import { Teams } from "../../containers/Teams";
 import { TeamDetails } from "../../containers/TeamDetails";
 import { Subtopics } from "../../containers/Subtopics";
 import { Challenges } from "../../containers/Challenges";
+import { ChallengeDetails } from "../../containers/ChallengeDetails";
+import { Home } from "../../containers/Home";
+import { Home as HomeIcon, Groups2, AccountCircle } from "@mui/icons-material";
 
 const menuStack = [
     {
-        path: "/equipes",
-        element: <Teams />,
-        title: "Equipes",
-        hideOnDrawer: false
+        path: "/",
+        element: <Home />,
+        title: "Home",
+        hideOnDrawer: false,
+        icon: <HomeIcon />
     },
     {
-        path: "/equipes/detalhes",
+        path: "/times",
+        element: <Teams />,
+        title: "Times",
+        hideOnDrawer: false,
+        icon: <Groups2 />
+    },
+    {
+        path: "/times/detalhes",
         element: <TeamDetails />,
         hideOnDrawer: true
     },
     {
-        path: "/equipes/topicos",
+        path: "/times/topicos",
         element: <Subtopics />,
         hideOnDrawer: true
     },
     {
-        path: "/equipes/desafios",
+        path: "/times/desafios",
         element: <Challenges />,
         hideOnDrawer: true
     },
     {
-        path: "/relatorios",
-        element: <div>Relatórios</div>,
-        title: "Relatórios",
-        hideOnDrawer: false
+        path: "/times/desafio/detalhes",
+        element: <ChallengeDetails />,
+        hideOnDrawer: true
     }
 ];
 
@@ -38,7 +48,8 @@ const generalStack = [
         path: "/perfil",
         element: <div>perfil</div>,
         title: "Perfil",
-        hideOnDrawer: false
+        hideOnDrawer: false,
+        icon: <AccountCircle />
     }
 ];
 

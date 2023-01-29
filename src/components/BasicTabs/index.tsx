@@ -59,7 +59,7 @@ export function BasicTabs(props: ITabs) {
                 </Tabs>
             </Box>
             {props.components.map((component, index) => (
-                <TabPanel value={value} index={index}>
+                <TabPanel value={value} index={index} key={index}>
                     {component}
                 </TabPanel>
             ))}

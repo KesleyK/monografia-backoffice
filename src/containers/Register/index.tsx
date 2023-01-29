@@ -1,16 +1,18 @@
-import { Box, TextField, Typography } from "@mui/material";
+import { useState } from "react";
+import { Box, Checkbox, Link, TextField, Typography } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { Formik } from "formik";
 import { IRegisterFormValues, registerInitialValues, registerSchema } from "../../schemas/register";
 import { createUser } from "../../services/firebase/auth/createUser";
 import { useRequest } from "../../services/firebase/hooks/useRequest";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link as RouterLink } from "react-router-dom";
 import { IUser } from "../../models/IUser";
 import styles from "./styles";
 
 export function Register() {
     const navigate = useNavigate();
     const { doRequest, loading, responseComponent } = useRequest();
+    const [acceptedPolicies, setAcceptedPolicies] = useState(false);
 
     const onFormSubmit = async (formData: IRegisterFormValues) => {
         const user = { ...formData };
@@ -26,6 +28,12 @@ export function Register() {
         });
     };
 
+    const policiesLink = (
+        <Link href="https://pedenite.github.io/monografia-pages/" color="secondary.dark" target="_blank">
+            Políticas de Privacidade
+        </Link>
+    );
+
     return (
         <Box sx={styles.container}>
             <Formik
@@ -37,7 +45,7 @@ export function Register() {
                 {({ handleChange, handleSubmit, values, errors }) => (
                     <Box sx={styles.card}>
                         <Typography variant="h6" sx={{ marginBottom: "10px" }}>
-                            Cadastro
+                            Registro
                         </Typography>
                         <TextField
                             fullWidth
@@ -87,15 +95,33 @@ export function Register() {
                             helperText={errors.passwordConfirmation ?? " "}
                         />
 
+                        <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+                            <Checkbox
+                                checked={acceptedPolicies}
+                                onClick={() => setAcceptedPolicies(!acceptedPolicies)}
+                                color="secondary"
+                                inputProps={{ "aria-labelledby": "checkbox-register" }}
+                            />
+                            <Typography>Confirmo que li e aceito as {policiesLink} do aplicativo.</Typography>
+                        </Box>
+
                         <LoadingButton
                             loading={loading}
                             sx={styles.button}
+                            disabled={!acceptedPolicies}
                             variant="contained"
                             fullWidth
                             onClick={() => handleSubmit()}
                         >
-                            Confirmar
+                            Cadastrar
                         </LoadingButton>
+
+                        <Typography sx={{ marginTop: 3, fontSize: 12 }}>
+                            Já possui uma conta?
+                            <Link component={RouterLink} to="/login" color="secondary.dark" sx={{ marginLeft: 0.4 }}>
+                                Faça login
+                            </Link>
+                        </Typography>
                     </Box>
                 )}
             </Formik>

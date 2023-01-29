@@ -113,7 +113,7 @@ export function TeamTopics() {
                     rows={tableRows}
                     buttonComponent={Button}
                     buttonProps={{ children: <SearchIcon /> }}
-                    onButtonClicked={(_, rowData) => navigate("/equipes/topicos", { state: { topic: rowData, team } })}
+                    onButtonClicked={(_, rowData) => navigate("/times/topicos", { state: { topic: rowData, team } })}
                 />
             </Box>
 

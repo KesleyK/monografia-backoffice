@@ -40,7 +40,7 @@ export function Teams() {
 
                 setTeams([...teams, { id: newTeamId, ...teamInfo }]);
             },
-            successMessage: "Equipe inserida com sucesso"
+            successMessage: "Time cadastrado com sucesso"
         });
 
     const tableRows = teams.map((team) => ({
@@ -53,7 +53,7 @@ export function Teams() {
         <Box sx={styles.container}>
             <Box sx={styles.card}>
                 <Typography variant="subtitle2" sx={styles.label}>
-                    Inserir Nova Equipe
+                    Inserir Novo Time
                 </Typography>
                 <Formik
                     initialValues={teamInitialValues}
@@ -65,7 +65,7 @@ export function Teams() {
                         <Box sx={styles.card}>
                             <TextField
                                 fullWidth
-                                label="Nome da equipe"
+                                label="Nome do time"
                                 variant="outlined"
                                 sx={styles.input}
                                 value={values.name}
@@ -93,14 +93,14 @@ export function Teams() {
                 </Formik>
 
                 <Typography variant="subtitle2" sx={styles.label}>
-                    Equipes cadastradas
+                    Times cadastrados
                 </Typography>
                 <BasicTable
-                    labels={["Equipe", "Participantes", "Tópicos"]}
+                    labels={["Time", "Participantes", "Tópicos"]}
                     rows={tableRows}
                     buttonComponent={Button}
                     buttonProps={{ children: <SearchIcon /> }}
-                    onButtonClicked={(_, rowData) => navigate("/equipes/detalhes", { state: rowData })}
+                    onButtonClicked={(_, rowData) => navigate("/times/detalhes", { state: rowData })}
                 />
             </Box>
             {responseComponent}

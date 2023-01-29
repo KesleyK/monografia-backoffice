@@ -4,17 +4,17 @@ import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import MailIcon from "@mui/icons-material/Mail";
 import MenuIcon from "@mui/icons-material/Menu";
+import LogoutIcon from "@mui/icons-material/Logout";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import ListSubheader from "@mui/material/ListSubheader";
+import Divider from "@mui/material/Divider";
 import { Link } from "react-router-dom";
 import { generalStack, menuStack } from "../../router/stacks/drawerStack";
 
@@ -30,30 +30,40 @@ export function ResponsiveDrawer(props) {
 
     const drawer = (
         <div>
-            <Toolbar>Algoritmia</Toolbar>
+            <Toolbar>
+                <img
+                    src={require("../../assets/logo.png")}
+                    alt="logo"
+                    style={{ width: "30px", height: "30px", marginRight: "10px" }}
+                />
+                <Typography variant="subtitle2">Algoritmia</Typography>
+            </Toolbar>
 
+            <Divider />
             <List>
                 <ListSubheader>Menu Principal</ListSubheader>
                 {menuStack
                     .filter((page) => !page.hideOnDrawer)
-                    .map((page, index) => (
+                    .map((page) => (
                         <ListItem key={page.title} disablePadding>
                             <ListItemButton component={Link} to={page.path}>
-                                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+                                <ListItemIcon>{page.icon}</ListItemIcon>
                                 <ListItemText primary={page.title} />
                             </ListItemButton>
                         </ListItem>
                     ))}
             </List>
 
+            <Divider />
+
             <List>
                 <ListSubheader>Geral</ListSubheader>
                 {generalStack
                     .filter((page) => !page.hideOnDrawer)
-                    .map((page, index) => (
+                    .map((page) => (
                         <ListItem key={page.title} disablePadding>
                             <ListItemButton component={Link} to={page.path}>
-                                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+                                <ListItemIcon>{page.icon}</ListItemIcon>
                                 <ListItemText primary={page.title} />
                             </ListItemButton>
                         </ListItem>
@@ -84,9 +94,21 @@ export function ResponsiveDrawer(props) {
                     >
                         <MenuIcon />
                     </IconButton>
-                    <Typography variant="h6" noWrap component="div">
-                        Bem-vindo
-                    </Typography>
+                    <Box
+                        sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                            width: "100%"
+                        }}
+                    >
+                        <Typography variant="h6" noWrap component="div">
+                            Bem-vindo
+                        </Typography>
+                        <Link to="/login" style={{ color: "#FFFF" }}>
+                            <LogoutIcon />
+                        </Link>
+                    </Box>
                 </Toolbar>
             </AppBar>
             <Box

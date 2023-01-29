@@ -105,9 +105,7 @@ export function Subtopics() {
                     rows={tableRows}
                     buttonComponent={Button}
                     buttonProps={{ children: <SearchIcon /> }}
-                    onButtonClicked={(_, subtopic) =>
-                        navigate("/equipes/desafios", { state: { topic, team, subtopic } })
-                    }
+                    onButtonClicked={(_, subtopic) => navigate("/times/desafios", { state: { topic, team, subtopic } })}
                 />
             </Box>
 

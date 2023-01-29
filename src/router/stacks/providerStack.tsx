@@ -1,4 +1,4 @@
-import { Home, Login, Register } from "../../containers";
+import { Layout, Login, Register } from "../../containers";
 import { menuStack, generalStack } from "./drawerStack";
 
 const providerStack = [
@@ -7,12 +7,12 @@ const providerStack = [
         element: <Login />
     },
     {
-        path: "cadastro",
+        path: "registro",
         element: <Register />
     },
     {
         path: "/",
-        element: <Home />,
+        element: <Layout />,
         childrens: [...menuStack, ...generalStack]
     }
 ];

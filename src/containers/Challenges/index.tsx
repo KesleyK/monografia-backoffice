@@ -1,9 +1,20 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { LoadingButton } from "@mui/lab";
-import { Box, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, TextField, Typography } from "@mui/material";
+import {
+    Box,
+    Button,
+    FormControl,
+    FormControlLabel,
+    FormLabel,
+    Radio,
+    RadioGroup,
+    TextField,
+    Typography
+} from "@mui/material";
 import { Formik } from "formik";
 import { IChallengeFormValues, challengeSchema, challengeInitialValues } from "../../schemas/challenge";
+import { Search as SearchIcon } from "@mui/icons-material";
 import { useRequest } from "../../services/firebase/hooks/useRequest";
 import { BasicTable, CheckboxList } from "../../components";
 import { ChallengeType } from "../../models/enum/ChallengeType";
@@ -18,6 +29,7 @@ import styles from "./styles";
 
 export function Challenges() {
     const location = useLocation();
+    const navigate = useNavigate();
     const { team, subtopic } = location.state;
     const { doRequest, loading, responseComponent } = useRequest();
 
@@ -109,8 +121,8 @@ export function Challenges() {
         );
     };
 
-    const tableRows = challenges.map((challenge, index) => ({
-        key: index,
+    const tableRows = challenges.map((challenge) => ({
+        key: challenge.id,
         columns: [challenge.name, challenge.points, ChallengeType[challenge.type].toLowerCase()],
         rowData: challenge
     }));
@@ -220,7 +232,13 @@ export function Challenges() {
                     )}
                 </Formik>
 
-                <BasicTable labels={["Desafio", "Pontos", "Tipo"]} rows={tableRows} />
+                <BasicTable
+                    labels={["Desafio", "Pontos", "Tipo"]}
+                    rows={tableRows}
+                    buttonComponent={Button}
+                    buttonProps={{ children: <SearchIcon /> }}
+                    onButtonClicked={(_, challenge) => navigate("/times/desafio/detalhes", { state: { challenge } })}
+                />
             </Box>
 
             {responseComponent}
