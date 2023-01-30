@@ -1,20 +1,5 @@
-import {
-    collection,
-    doc,
-    DocumentData,
-    DocumentSnapshot,
-    getDoc,
-    getDocs,
-    query,
-    QuerySnapshot,
-    setDoc,
-    where
-} from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../../config/firebase";
-import { parseCollection } from "../../../helpers/collectionUtils";
-import { IChallengeReport } from "../../../models/IChallengeReport";
-import { ITopic } from "../../../models/ITopic";
-import SubtopicsCollection from "./subtopics";
 
 export default class ChallengeReportsCollection {
     private static readonly collectionName = "challengeReports";
