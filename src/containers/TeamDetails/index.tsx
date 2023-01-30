@@ -1,4 +1,4 @@
-import { BasicTabs } from "../../components/BasicTabs";
+import { BasicTabs } from "../../components";
 import { TeamParticipants } from "../TeamParticipants";
 import { TeamTopics } from "../TeamTopics";
 
