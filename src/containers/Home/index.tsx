@@ -1,5 +1,6 @@
 import { Box, Grid, Paper, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
+import { SimpleBarChart } from "../../components/SimpleBarChart";
 import { parseCollection } from "../../helpers/collectionUtils";
 import { retrieveUserInfo } from "../../services/firebase/auth/retrieveUserInfo";
 import ChallengeReportsCollection from "../../services/firebase/db/challengeReports";
@@ -68,50 +69,99 @@ export function Home() {
         fetchData();
     }, []);
 
+    const labels = [
+        "Janeiro",
+        "Fevereiro",
+        "Março",
+        "Abril",
+        "Maio",
+        "Junho",
+        "Julho",
+        "Agosto",
+        "Setembro",
+        "Outubro",
+        "Novembro",
+        "Dezembro"
+    ];
+    const currentDate = new Date();
+    const correctAnswers = Array(12).fill(0);
+    const wrongAnswers = Array(12).fill(0);
+
+    for (const report of challengeReports) {
+        const answerDate = report.created_at ? new Date(report.created_at) : currentDate;
+        const answerMonth = answerDate.getMonth();
+
+        if (answerDate.getFullYear() === currentDate.getFullYear()) {
+            if (report.answeredCorrectly) {
+                correctAnswers[answerMonth] += 1;
+            } else {
+                wrongAnswers[answerMonth] += 1;
+            }
+        }
+    }
+
+    const chartData = {
+        labels,
+        datasets: [
+            {
+                label: "Acertos",
+                data: correctAnswers,
+                backgroundColor: "rgba(53, 162, 235, 0.5)"
+            },
+            {
+                label: "Erros",
+                data: wrongAnswers,
+                backgroundColor: "rgba(255, 99, 132, 0.5)"
+            }
+        ]
+    };
+
     return (
         <Box sx={styles.container}>
-            <Grid container spacing={10}>
+            <Grid container spacing={10} sx={styles.gridContainer}>
                 <Grid item xs={4}>
-                    <Paper elevation={3} sx={styles.card}>
-                        <Typography>{teams.length}</Typography>
-                        <Typography>Times</Typography>
+                    <Paper elevation={1} sx={styles.card}>
+                        <Typography variant="h3">{teams.length}</Typography>
+                        <Typography variant="h6">Times</Typography>
                     </Paper>
                 </Grid>
                 <Grid item xs={4}>
-                    <Paper elevation={3} sx={styles.card}>
-                        <Typography>{participants.length}</Typography>
-                        <Typography>Participantes</Typography>
-                    </Paper>
-                </Grid>
-
-                <Grid item xs={4}>
-                    <Paper elevation={3} sx={styles.card}>
-                        <Typography>{topics.length}</Typography>
-                        <Typography>Tópicos</Typography>
+                    <Paper elevation={1} sx={styles.card}>
+                        <Typography variant="h3">{participants.length}</Typography>
+                        <Typography variant="h6">Participantes</Typography>
                     </Paper>
                 </Grid>
 
                 <Grid item xs={4}>
-                    <Paper elevation={3} sx={styles.card}>
-                        <Typography>{subtopics.length}</Typography>
-                        <Typography>Subtópico</Typography>
+                    <Paper elevation={1} sx={styles.card}>
+                        <Typography variant="h3">{topics.length}</Typography>
+                        <Typography variant="h6">Tópicos</Typography>
                     </Paper>
                 </Grid>
 
                 <Grid item xs={4}>
-                    <Paper elevation={3} sx={styles.card}>
-                        <Typography>{challenges.length}</Typography>
-                        <Typography>Desafios</Typography>
+                    <Paper elevation={1} sx={styles.card}>
+                        <Typography variant="h3">{subtopics.length}</Typography>
+                        <Typography variant="h6">Subtópicos</Typography>
                     </Paper>
                 </Grid>
 
                 <Grid item xs={4}>
-                    <Paper elevation={3} sx={styles.card}>
-                        <Typography>{challengeReports.length}</Typography>
-                        <Typography>Desafios respondidos</Typography>
+                    <Paper elevation={1} sx={styles.card}>
+                        <Typography variant="h3">{challenges.length}</Typography>
+                        <Typography variant="h6">Desafios</Typography>
+                    </Paper>
+                </Grid>
+
+                <Grid item xs={4}>
+                    <Paper elevation={1} sx={styles.card}>
+                        <Typography variant="h3">{challengeReports.length}</Typography>
+                        <Typography variant="h6">Desafios respondidos</Typography>
                     </Paper>
                 </Grid>
             </Grid>
+
+            <SimpleBarChart data={chartData} />
         </Box>
     );
 }

@@ -17,7 +17,7 @@ export function ChallengeDetails() {
         ChallengeReportsCollection.findByChallenge(challenge.id).then((result) => {
             setReports(parseCollection(result));
         });
-    }, []);
+    }, [challenge.id]);
 
     const tableRows = reports.map((report) => ({
         key: report.id,

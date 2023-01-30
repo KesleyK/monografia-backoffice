@@ -1,15 +1,16 @@
 const styles = {
     container: {
-        paddingTop: 5,
-        paddingLeft: 20,
-        paddingRight: 20
+        padding: 5
     },
     card: {
-        height: 250,
+        height: 200,
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
         flexDirection: "column"
+    },
+    gridContainer: {
+        marginBottom: 10
     }
 };
 
