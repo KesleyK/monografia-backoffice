@@ -18,7 +18,7 @@ import { Search as SearchIcon } from "@mui/icons-material";
 import { useRequest } from "../../services/firebase/hooks/useRequest";
 import { BasicTable, CheckboxList } from "../../components";
 import { ChallengeType } from "../../models/enum/ChallengeType";
-import { RadioList } from "../../components/RadioList";
+import { RadioList } from "../../components";
 import { CustomError } from "../../helpers/customError";
 import { parseCollection } from "../../helpers/collectionUtils";
 import ChallengesCollection from "../../services/firebase/db/challenges";
