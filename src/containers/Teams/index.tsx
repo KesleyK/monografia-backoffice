@@ -59,7 +59,10 @@ export function Teams() {
                     initialValues={teamInitialValues}
                     validationSchema={teamSchema}
                     validateOnChange={false}
-                    onSubmit={(values) => onFormSubmit(values)}
+                    onSubmit={(values, {resetForm}) => {
+                        onFormSubmit(values);
+                        resetForm();
+                    }}
                 >
                     {({ handleChange, handleSubmit, values, errors }) => (
                         <Box sx={styles.card}>
