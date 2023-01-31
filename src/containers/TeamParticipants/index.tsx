@@ -25,7 +25,7 @@ export function TeamParticipants() {
 
     useEffect(() => {
         ParticipantsCollection.populateIds(team.participants).then((result) =>
-            setParticipants(parseCollection(result))
+            setParticipants(parseCollection(result).sort(byPointsDesc))
         );
     }, [team.participants]);
 
@@ -75,6 +75,8 @@ export function TeamParticipants() {
             },
             successMessage: "Usuário adicionado com sucesso."
         });
+
+    const byPointsDesc = (a, b) => b.points - a.points;
 
     const tableRows = participants.map((participant) => ({
         key: participant.id,
