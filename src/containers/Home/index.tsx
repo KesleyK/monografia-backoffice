@@ -120,41 +120,41 @@ export function Home() {
         <Box sx={styles.container}>
             <Grid container spacing={10} sx={styles.gridContainer}>
                 <Grid item xs={4}>
-                    <Paper elevation={1} sx={styles.card}>
+                    <Paper elevation={1} sx={{ ...styles.card, backgroundColor: "#BAD7EE" }}>
                         <Typography variant="h3">{teams.length}</Typography>
                         <Typography variant="h6">Times</Typography>
                     </Paper>
                 </Grid>
                 <Grid item xs={4}>
-                    <Paper elevation={1} sx={styles.card}>
+                    <Paper elevation={1} sx={{ ...styles.card, backgroundColor: "#D4EAEF" }}>
                         <Typography variant="h3">{participants.length}</Typography>
                         <Typography variant="h6">Participantes</Typography>
                     </Paper>
                 </Grid>
 
                 <Grid item xs={4}>
-                    <Paper elevation={1} sx={styles.card}>
+                    <Paper elevation={1} sx={{ ...styles.card, backgroundColor: "#D4EFE3" }}>
                         <Typography variant="h3">{topics.length}</Typography>
                         <Typography variant="h6">Tópicos</Typography>
                     </Paper>
                 </Grid>
 
                 <Grid item xs={4}>
-                    <Paper elevation={1} sx={styles.card}>
+                    <Paper elevation={1} sx={{ ...styles.card, backgroundColor: "#EFD4EE" }}>
                         <Typography variant="h3">{subtopics.length}</Typography>
                         <Typography variant="h6">Subtópicos</Typography>
                     </Paper>
                 </Grid>
 
                 <Grid item xs={4}>
-                    <Paper elevation={1} sx={styles.card}>
+                    <Paper elevation={1} sx={{ ...styles.card, backgroundColor: "#DFD4EF" }}>
                         <Typography variant="h3">{challenges.length}</Typography>
                         <Typography variant="h6">Desafios</Typography>
                     </Paper>
                 </Grid>
 
                 <Grid item xs={4}>
-                    <Paper elevation={1} sx={styles.card}>
+                    <Paper elevation={1} sx={{ ...styles.card, backgroundColor: "#EFE4D4" }}>
                         <Typography variant="h3">{challengeReports.length}</Typography>
                         <Typography variant="h6">Desafios respondidos</Typography>
                     </Paper>
