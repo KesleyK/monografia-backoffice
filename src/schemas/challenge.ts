@@ -16,8 +16,8 @@ export const challengeSchema = Yup.object().shape({
     type: Yup.number().required("Obrigatório"),
     selection: Yup.array().of(Yup.string()),
     correct: Yup.array().of(Yup.string()).required("Obrigatório"),
-    points: Yup.number()
-        .min(0, "Apenas números positivos ou zero")
+    points: Yup.number().integer("Apenas inteiros")
+        .min(1, "Apenas números positivos")
         .max(100, "Máximo de 100 pontos")
         .required("Obrigatório")
 });
