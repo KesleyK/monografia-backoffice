@@ -11,7 +11,6 @@ import {
     updateDoc
 } from "firebase/firestore";
 import { db } from "../../../config/firebase";
-import { ISubtopic } from "../../../models/ISubtopic";
 import { ITopic } from "../../../models/ITopic";
 
 export default class TopicsCollection {

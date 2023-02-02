@@ -88,7 +88,7 @@ export function Home() {
     const wrongAnswers = Array(12).fill(0);
 
     for (const report of challengeReports) {
-        const answerDate = report.created_at ? new Date(report.created_at) : currentDate;
+        const answerDate = report.createdAt ? new Date(report.createdAt) : currentDate;
         const answerMonth = answerDate.getMonth();
 
         if (answerDate.getFullYear() === currentDate.getFullYear()) {
