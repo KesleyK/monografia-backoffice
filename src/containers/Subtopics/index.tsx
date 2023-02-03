@@ -67,7 +67,10 @@ export function Subtopics() {
                     initialValues={subtopicInitialValues}
                     validationSchema={subtopicSchema}
                     validateOnChange={false}
-                    onSubmit={(values) => onFormSubmitted(values)}
+                    onSubmit={(values, { resetForm }) => {
+                        onFormSubmitted(values);
+                        resetForm();
+                    }}
                 >
                     {({ handleChange, handleSubmit, values, errors }) => (
                         <Box sx={styles.card}>

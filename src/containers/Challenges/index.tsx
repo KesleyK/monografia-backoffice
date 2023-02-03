@@ -141,7 +141,10 @@ export function Challenges() {
                     initialValues={challengeInitialValues}
                     validationSchema={challengeSchema}
                     validateOnChange={false}
-                    onSubmit={(values) => onFormSubmitted(values)}
+                    onSubmit={(values, { resetForm }) => {
+                        onFormSubmitted(values);
+                        resetForm();
+                    }}
                 >
                     {({ handleChange, handleSubmit, values, errors, initialValues }) => (
                         <Box sx={styles.card}>
