@@ -47,7 +47,9 @@ export function TeamTopics() {
     const tableRows = topics.map((topic) => ({
         key: topic.id,
         columns: [topic.name, topic.icon, topic.isSequential ? "Sim" : "Não", topic.subtopics.length],
-        rowData: topic
+        rowData: topic,
+        buttonComponent: Button,
+        buttonProps: { children: <SearchIcon /> }
     }));
 
     return (
@@ -119,8 +121,6 @@ export function TeamTopics() {
                 <BasicTable
                     labels={["Tópico", "Ícone", "Trilha de aprendizado?", "Subtópicos"]}
                     rows={tableRows}
-                    buttonComponent={Button}
-                    buttonProps={{ children: <SearchIcon /> }}
                     onButtonClicked={(_, rowData) => navigate("/times/topicos", { state: { topic: rowData, team } })}
                     loading={loadingTable}
                 />

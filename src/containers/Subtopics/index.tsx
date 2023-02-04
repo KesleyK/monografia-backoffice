@@ -58,7 +58,9 @@ export function Subtopics() {
     const tableRows = subtopics.map((subtopic, index) => ({
         key: index,
         columns: [subtopic.name, subtopic.challenges.length],
-        rowData: subtopic
+        rowData: subtopic,
+        buttonComponent: Button,
+        buttonProps: { children: <SearchIcon /> }
     }));
 
     return (
@@ -111,8 +113,6 @@ export function Subtopics() {
                 <BasicTable
                     labels={["Subtópico", "Desafios"]}
                     rows={tableRows}
-                    buttonComponent={Button}
-                    buttonProps={{ children: <SearchIcon /> }}
                     onButtonClicked={(_, subtopic) => navigate("/times/desafios", { state: { topic, team, subtopic } })}
                     loading={loadingTable}
                 />

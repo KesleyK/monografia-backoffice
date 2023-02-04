@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import { Formik } from "formik";
 import { Box, Typography, TextField, Button } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
-import { Delete as DeleteIcon } from "@mui/icons-material";
+import { Delete as DeleteIcon, Undo as UndoIcon } from "@mui/icons-material";
 import { BasicTable } from "../../components";
 import { IParticipantFormValues, participantInitialValues, participantSchema } from "../../schemas/participant";
 import { useRequest } from "../../services/firebase/hooks/useRequest";
@@ -35,19 +35,20 @@ export function TeamParticipants() {
         fetchData();
     }, [team.id]);
 
-    const onUserDisabled = async (participantId: string, userData: IParticipant) =>
-        doRequest({
-            handler: async () => {
-                userData.status = ParticipantStatus.DISABLED;
-                await ParticipantsCollection.put(participantId, userData);
+    const onChangingUserStatus = async (participantId: string, userData: IParticipant) => {
+        let updatedStatus = ParticipantStatus.PENDING;
+        if (userData.status !== ParticipantStatus.DISABLED) {
+            updatedStatus = ParticipantStatus.DISABLED;
+        }
 
-                const updatedParticipants = [...participants];
-                const participantIndex = participants.findIndex((participant) => participant.id === participantId);
-                updatedParticipants[participantIndex] = userData;
-                setParticipants(updatedParticipants);
-            },
-            successMessage: "Usuário desativado com sucesso."
-        });
+        userData.status = updatedStatus;
+        await ParticipantsCollection.put(participantId, userData);
+
+        const updatedParticipants = [...participants];
+        const participantIndex = participants.findIndex((participant) => participant.id === participantId);
+        updatedParticipants[participantIndex] = userData;
+        setParticipants(updatedParticipants);
+    };
 
     const onFormSubmitted = async (formData: IParticipantFormValues) =>
         doRequest({
@@ -92,7 +93,8 @@ export function TeamParticipants() {
             participant.points
         ],
         rowData: participant,
-        disabledButton: participant.status === ParticipantStatus.DISABLED
+        buttonComponent: Button,
+        buttonProps: { children: participant.status !== ParticipantStatus.DISABLED ? <DeleteIcon /> : <UndoIcon /> }
     }));
 
     return (
@@ -135,9 +137,7 @@ export function TeamParticipants() {
                 <BasicTable
                     labels={["Participante", "Status", "Pontos"]}
                     rows={tableRows}
-                    buttonComponent={Button}
-                    buttonProps={{ children: <DeleteIcon /> }}
-                    onButtonClicked={onUserDisabled}
+                    onButtonClicked={onChangingUserStatus}
                     loading={loadingTable}
                 />
             </Box>

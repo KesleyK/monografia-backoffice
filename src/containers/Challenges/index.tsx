@@ -132,7 +132,9 @@ export function Challenges() {
     const tableRows = challenges.map((challenge) => ({
         key: challenge.id,
         columns: [challenge.name, challenge.points, ChallengeType[challenge.type].toLowerCase()],
-        rowData: challenge
+        rowData: challenge,
+        buttonComponent: Button,
+        buttonProps: { children: <SearchIcon /> }
     }));
 
     return (
@@ -243,8 +245,6 @@ export function Challenges() {
                 <BasicTable
                     labels={["Desafio", "Pontos", "Tipo"]}
                     rows={tableRows}
-                    buttonComponent={Button}
-                    buttonProps={{ children: <SearchIcon /> }}
                     onButtonClicked={(_, challenge) => navigate("/times/desafio/detalhes", { state: { challenge } })}
                     loading={loadingTable}
                 />

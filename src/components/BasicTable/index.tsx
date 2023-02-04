@@ -14,14 +14,14 @@ interface ITableRow {
     columns: string[];
     rowData?: any;
     disabledButton?: boolean;
+    buttonComponent?: React.ElementType;
+    buttonProps?: any;
 }
 
 interface IProps {
     labels: string[];
     rows: ITableRow[];
     onButtonClicked?: (key, rowData) => any;
-    buttonComponent?: React.ElementType;
-    buttonProps?: any;
     loading?: boolean;
 }
 
@@ -41,9 +41,9 @@ export function BasicTable(props: IProps) {
                 </TableHead>
 
                 <TableBody>
-                    {props.rows.map(({ key, rowData, columns, disabledButton }, columIndex) => (
+                    {props.rows.map((row, columIndex) => (
                         <TableRow key={columIndex} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-                            {columns.map((column, valueIndex) => (
+                            {row.columns.map((column, valueIndex) => (
                                 <TableCell key={`${columIndex}-${valueIndex}`} align="center">
                                     {column}
                                 </TableCell>
@@ -51,10 +51,10 @@ export function BasicTable(props: IProps) {
 
                             {props.onButtonClicked ? (
                                 <TableCell align="right">
-                                    <props.buttonComponent
-                                        disabled={disabledButton}
-                                        onClick={() => props.onButtonClicked(key, rowData)}
-                                        {...props.buttonProps}
+                                    <row.buttonComponent
+                                        disabled={row.disabledButton}
+                                        onClick={() => props.onButtonClicked(row.key, row.rowData)}
+                                        {...row.buttonProps}
                                     />
                                 </TableCell>
                             ) : null}

@@ -48,7 +48,9 @@ export function Teams() {
     const tableRows = teams.map((team) => ({
         key: team.id,
         columns: [team.name, team.participants.length, team.topics.length],
-        rowData: team
+        rowData: team,
+        buttonComponent: Button,
+        buttonProps: { children: <SearchIcon /> }
     }));
 
     return (
@@ -100,8 +102,6 @@ export function Teams() {
                 <BasicTable
                     labels={["Time", "Participantes", "Tópicos"]}
                     rows={tableRows}
-                    buttonComponent={Button}
-                    buttonProps={{ children: <SearchIcon /> }}
                     onButtonClicked={(_, rowData) => navigate("/times/detalhes", { state: rowData })}
                     loading={tableLoading}
                 />
