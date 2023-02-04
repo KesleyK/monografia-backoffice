@@ -30,8 +30,8 @@ export function useRequest() {
                 onSuccess(response);
             }
         } catch (err) {
-            const errorCode = err.code ?? "default/error-message";
-            const parsedFirebaseError = FirebaseErrorCode[errorCode];
+            const errorCode = err.code;
+            const parsedFirebaseError = FirebaseErrorCode[errorCode] ?? FirebaseErrorCode["default/error-message"];
 
             setIsLoading(false);
             setResponseComponent(<Alert severity="error" message={parsedFirebaseError} />);
