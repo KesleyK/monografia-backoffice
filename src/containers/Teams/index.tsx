@@ -15,6 +15,7 @@ import styles from "./styles";
 export function Teams() {
     const navigate = useNavigate();
     const [teams, setTeams] = useState([]);
+    const [tableLoading, setTableLoading] = useState(true);
     const { doRequest, loading, responseComponent } = useRequest();
 
     useEffect(() => {
@@ -39,6 +40,7 @@ export function Teams() {
                 const newTeamId = await TeamsCollection.post(teamInfo);
 
                 setTeams([...teams, { id: newTeamId, ...teamInfo }]);
+                setTableLoading(false);
             },
             successMessage: "Time cadastrado com sucesso"
         });
@@ -101,6 +103,7 @@ export function Teams() {
                     buttonComponent={Button}
                     buttonProps={{ children: <SearchIcon /> }}
                     onButtonClicked={(_, rowData) => navigate("/times/detalhes", { state: rowData })}
+                    loading={tableLoading}
                 />
             </Box>
             {responseComponent}

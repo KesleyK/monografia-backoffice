@@ -9,19 +9,27 @@ import { ITopicFormValues, topicSchema, topicInitialValues } from "../../schemas
 import { useRequest } from "../../services/firebase/hooks/useRequest";
 import { parseCollection } from "../../helpers/collectionUtils";
 import TopicsCollection from "../../services/firebase/db/topics";
-import styles from "./styles";
 import TeamsCollection from "../../services/firebase/db/teams";
+import styles from "./styles";
 
 export function TeamTopics() {
     const navigate = useNavigate();
     const location = useLocation();
     const team = location.state;
     const [topics, setTopics] = useState([]);
+    const [loadingTable, setLoadingTable] = useState(true);
     const { doRequest, loading, responseComponent } = useRequest();
 
     useEffect(() => {
-        TopicsCollection.populateIds(team.topics).then((result) => setTopics(parseCollection(result)));
-    }, [team.topics]);
+        const fetchData = async () => {
+            const fetchedTeam = TeamsCollection.convert(await TeamsCollection.get(team.id));
+            const fetchedTopics = await TopicsCollection.populateIds(fetchedTeam.topics);
+            setTopics(parseCollection(fetchedTopics));
+            setLoadingTable(false);
+        };
+
+        fetchData();
+    }, [team.id]);
 
     const onFormSubmitted = async (formData: ITopicFormValues) =>
         doRequest({
@@ -114,6 +122,7 @@ export function TeamTopics() {
                     buttonComponent={Button}
                     buttonProps={{ children: <SearchIcon /> }}
                     onButtonClicked={(_, rowData) => navigate("/times/topicos", { state: { topic: rowData, team } })}
+                    loading={loadingTable}
                 />
             </Box>
 

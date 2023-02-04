@@ -12,11 +12,16 @@ export function ChallengeDetails() {
     const location = useLocation();
     const { challenge } = location.state;
     const [reports, setReports] = useState([]);
+    const [loadingTable, setLoadingTable] = useState(true);
 
     useEffect(() => {
-        ChallengeReportsCollection.findByChallenge(challenge.id).then((result) => {
-            setReports(parseCollection(result));
-        });
+        const fetchData = async () => {
+            const fetchedReports = await ChallengeReportsCollection.findByChallenge(challenge.id);
+            setReports(parseCollection(fetchedReports));
+            setLoadingTable(false);
+        };
+
+        fetchData();
     }, [challenge.id]);
 
     const tableRows = reports.map((report) => ({
@@ -43,7 +48,7 @@ export function ChallengeDetails() {
                     Erros: {answeredWronglyQnt}
                 </Typography>
 
-                <BasicTable labels={["Usuário", "Resposta"]} rows={tableRows} />
+                <BasicTable loading={loadingTable} labels={["Usuário", "Resposta"]} rows={tableRows} />
             </Box>
         </Box>
     );

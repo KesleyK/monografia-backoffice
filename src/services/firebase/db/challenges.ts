@@ -6,6 +6,10 @@ export default class ChallengesCollection {
     private static readonly collectionName = "challenges";
     private static readonly ref = collection(db, this.collectionName);
 
+    static get(id: string): Promise<DocumentSnapshot<DocumentData>> {
+        return getDoc(doc(db, this.collectionName, id));
+    }
+
     static async post(data: IChallenge) {
         const newChallenge = doc(this.ref);
         await setDoc(newChallenge, data);
@@ -15,5 +19,18 @@ export default class ChallengesCollection {
 
     static async populateIds(ids: string[]): Promise<DocumentSnapshot<DocumentData>[]> {
         return (await Promise.all(ids.map((id) => getDoc(doc(this.ref, id))))).filter((doc) => doc.exists());
+    }
+
+    static convert(firestoreSnapshot: DocumentSnapshot<DocumentData>): IChallenge {
+        const firestoreData = firestoreSnapshot.data();
+
+        return {
+            name: firestoreData.name,
+            body: firestoreData.body,
+            type: firestoreData.type,
+            selection: firestoreData.selection,
+            correct: firestoreData.correct,
+            points: firestoreData.points
+        };
     }
 }

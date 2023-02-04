@@ -6,6 +6,8 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import { CircularProgress, Typography } from "@mui/material";
+import { Box } from "@mui/system";
 
 interface ITableRow {
     key: string | number;
@@ -20,6 +22,7 @@ interface IProps {
     onButtonClicked?: (key, rowData) => any;
     buttonComponent?: React.ElementType;
     buttonProps?: any;
+    loading?: boolean;
 }
 
 export function BasicTable(props: IProps) {
@@ -36,6 +39,7 @@ export function BasicTable(props: IProps) {
                         {props.onButtonClicked ? <TableCell></TableCell> : null}
                     </TableRow>
                 </TableHead>
+
                 <TableBody>
                     {props.rows.map(({ key, rowData, columns, disabledButton }, columIndex) => (
                         <TableRow key={columIndex} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
@@ -58,6 +62,18 @@ export function BasicTable(props: IProps) {
                     ))}
                 </TableBody>
             </Table>
+
+            {props.loading && !props.rows.length ? (
+                <Box sx={{ display: "flex", justifyContent: "center", padding: 5 }}>
+                    <CircularProgress />
+                </Box>
+            ) : null}
+
+            {!props.loading && !props.rows.length ? (
+                <Box sx={{ display: "flex", justifyContent: "center", padding: 5, backgroundColor: "#ecececcc" }}>
+                    <Typography>Nenhum dado cadastrado!</Typography>
+                </Box>
+            ) : null}
         </TableContainer>
     );
 }

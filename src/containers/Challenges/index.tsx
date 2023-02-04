@@ -34,6 +34,7 @@ export function Challenges() {
     const { doRequest, loading, responseComponent } = useRequest();
 
     const [challenges, setChallenges] = useState([]);
+    const [loadingTable, setLoadingTable] = useState(true);
     const [checkboxItems, setCheckboxItems] = useState(["Resposta 1", "Resposta 2", "Resposta 3"]);
     const [checkboxChecked, setCheckboxChecked] = useState([0, 2]);
     const [radioItems, setRadioItems] = useState(["Resposta 1", "Resposta 2", "Resposta 3"]);
@@ -41,8 +42,15 @@ export function Challenges() {
     const [inputAnswer, setInputAnswer] = useState([""]);
 
     useEffect(() => {
-        ChallengesCollection.populateIds(subtopic.challenges).then((result) => setChallenges(parseCollection(result)));
-    }, [subtopic.challenges]);
+        const fetchData = async () => {
+            const fetchedSubtopic = SubtopicsCollection.convert(await SubtopicsCollection.get(subtopic.id));
+            const fetchedChallenges = await ChallengesCollection.populateIds(fetchedSubtopic.challenges);
+            setChallenges(parseCollection(fetchedChallenges));
+            setLoadingTable(false);
+        };
+
+        fetchData();
+    }, [subtopic.id]);
 
     const onFormSubmitted = async (formData: IChallengeFormValues) =>
         doRequest({
@@ -238,6 +246,7 @@ export function Challenges() {
                     buttonComponent={Button}
                     buttonProps={{ children: <SearchIcon /> }}
                     onButtonClicked={(_, challenge) => navigate("/times/desafio/detalhes", { state: { challenge } })}
+                    loading={loadingTable}
                 />
             </Box>
 

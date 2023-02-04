@@ -41,4 +41,15 @@ export default class TopicsCollection {
             subtopics: arrayUnion(subtopicId)
         });
     }
+
+    static convert(firestoreSnapshot: DocumentSnapshot<DocumentData>): ITopic {
+        const firestoreData = firestoreSnapshot.data();
+
+        return {
+            name: firestoreData.name,
+            icon: firestoreData.icon,
+            isSequential: firestoreData.isSequential,
+            subtopics: firestoreData.subtopics
+        };
+    }
 }

@@ -19,11 +19,19 @@ export function Subtopics() {
     const location = useLocation();
     const { team, topic } = location.state;
     const [subtopics, setSubtopics] = useState([]);
+    const [loadingTable, setLoadingTable] = useState(true);
     const { doRequest, loading, responseComponent } = useRequest();
 
     useEffect(() => {
-        SubtopicsCollection.populateIds(topic.subtopics).then((result) => setSubtopics(parseCollection(result)));
-    }, [topic.subtopics]);
+        const fetchData = async () => {
+            const fetchedTopic = TopicsCollection.convert(await TopicsCollection.get(topic.id));
+            const fetchedSubtopics = await SubtopicsCollection.populateIds(fetchedTopic.subtopics);
+            setSubtopics(parseCollection(fetchedSubtopics));
+            setLoadingTable(false);
+        };
+
+        fetchData();
+    }, [topic.id]);
 
     const onFormSubmitted = async (formData: ISubtopicFormValues) =>
         doRequest({
@@ -106,6 +114,7 @@ export function Subtopics() {
                     buttonComponent={Button}
                     buttonProps={{ children: <SearchIcon /> }}
                     onButtonClicked={(_, subtopic) => navigate("/times/desafios", { state: { topic, team, subtopic } })}
+                    loading={loadingTable}
                 />
             </Box>
 

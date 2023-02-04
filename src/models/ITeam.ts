@@ -1,9 +1,7 @@
-import { IParticipant } from "./IParticipant";
-
 export interface ITeam {
     name: string;
     ownerId: string;
     description: string;
-    participants: IParticipant[];
+    participants: string[];
     topics: string[];
 }

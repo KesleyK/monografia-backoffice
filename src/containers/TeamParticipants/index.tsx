@@ -21,13 +21,19 @@ export function TeamParticipants() {
     const location = useLocation();
     const team = location.state;
     const [participants, setParticipants] = useState([]);
+    const [loadingTable, setLoadingTable] = useState(true);
     const { doRequest, loading, responseComponent } = useRequest();
 
     useEffect(() => {
-        ParticipantsCollection.populateIds(team.participants).then((result) =>
-            setParticipants(parseCollection(result).sort(byPointsDesc))
-        );
-    }, [team.participants]);
+        const fetchData = async () => {
+            const fetchedTeam = TeamsCollection.convert(await TeamsCollection.get(team.id));
+            const fetchedParticipants = await ParticipantsCollection.populateIds(fetchedTeam.participants);
+            setParticipants(parseCollection(fetchedParticipants).sort(byPointsDesc));
+            setLoadingTable(false);
+        };
+
+        fetchData();
+    }, [team.id]);
 
     const onUserDisabled = async (participantId: string, userData: IParticipant) =>
         doRequest({
@@ -132,6 +138,7 @@ export function TeamParticipants() {
                     buttonComponent={Button}
                     buttonProps={{ children: <DeleteIcon /> }}
                     onButtonClicked={onUserDisabled}
+                    loading={loadingTable}
                 />
             </Box>
 
