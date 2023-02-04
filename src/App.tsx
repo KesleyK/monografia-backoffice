@@ -1,9 +1,9 @@
 import { ThemeProvider } from "@mui/material";
-import { router } from "./router/router";
+import { Router } from "./router/router";
 import theme from "./styles/theme";
 
 function App() {
-    return <ThemeProvider theme={theme}>{router}</ThemeProvider>;
+    return <ThemeProvider theme={theme}>{<Router />}</ThemeProvider>;
 }
 
 export default App;
