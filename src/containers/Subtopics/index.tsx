@@ -41,7 +41,7 @@ export function Subtopics() {
                 await TopicsCollection.insertSubtopic(topic.id, newSubtopicId);
 
                 const updatedSubtopics = [...subtopics];
-                updatedSubtopics.push(formData);
+                updatedSubtopics.push({ ...formData, id: newSubtopicId });
                 setSubtopics(updatedSubtopics);
             },
             successMessage: "Subtópico adicionado com sucesso."
