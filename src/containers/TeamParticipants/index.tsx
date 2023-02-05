@@ -4,7 +4,7 @@ import { Formik } from "formik";
 import { Box, Typography, TextField, Button } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { Delete as DeleteIcon, Undo as UndoIcon } from "@mui/icons-material";
-import { BasicTable } from "../../components";
+import { BasicModal, BasicTable } from "../../components";
 import { IParticipantFormValues, participantInitialValues, participantSchema } from "../../schemas/participant";
 import { useRequest } from "../../services/firebase/hooks/useRequest";
 import { CustomError } from "../../helpers/customError";
@@ -22,6 +22,9 @@ export function TeamParticipants() {
     const team = location.state;
     const [participants, setParticipants] = useState([]);
     const [loadingTable, setLoadingTable] = useState(true);
+    const [modalOpen, setModalOpen] = useState(false);
+    const [participantId, setParticipantId] = useState(null);
+    const [participantData, setParticipantData] = useState(null);
     const { doRequest, loading, responseComponent } = useRequest();
 
     useEffect(() => {
@@ -35,20 +38,31 @@ export function TeamParticipants() {
         fetchData();
     }, [team.id]);
 
-    const onChangingUserStatus = async (participantId: string, userData: IParticipant) => {
-        let updatedStatus = ParticipantStatus.PENDING;
-        if (userData.status !== ParticipantStatus.DISABLED) {
-            updatedStatus = ParticipantStatus.DISABLED;
-        }
-
-        userData.status = updatedStatus;
-        await ParticipantsCollection.put(participantId, userData);
-
-        const updatedParticipants = [...participants];
-        const participantIndex = participants.findIndex((participant) => participant.id === participantId);
-        updatedParticipants[participantIndex] = userData;
-        setParticipants(updatedParticipants);
+    const onToggleModal = (participantId: string, participantData: IParticipant) => {
+        setParticipantId(participantId);
+        setParticipantData(participantData);
+        setModalOpen(!modalOpen);
     };
+
+    const onChangingUserStatus = async () =>
+        doRequest({
+            handler: async () => {
+                let updatedStatus = ParticipantStatus.PENDING;
+                if (participantData.status !== ParticipantStatus.DISABLED) {
+                    updatedStatus = ParticipantStatus.DISABLED;
+                }
+
+                participantData.status = updatedStatus;
+                await ParticipantsCollection.put(participantId, participantData);
+
+                const updatedParticipants = [...participants];
+                const participantIndex = participants.findIndex((participant) => participant.id === participantId);
+                updatedParticipants[participantIndex] = participantData;
+                setParticipants(updatedParticipants);
+                setModalOpen(false);
+            },
+            successMessage: "Usuário alterado com sucesso."
+        });
 
     const onFormSubmitted = async (formData: IParticipantFormValues) =>
         doRequest({
@@ -137,10 +151,22 @@ export function TeamParticipants() {
                 <BasicTable
                     labels={["Participante", "Status", "Pontos"]}
                     rows={tableRows}
-                    onButtonClicked={onChangingUserStatus}
+                    onButtonClicked={onToggleModal}
                     loading={loadingTable}
                 />
             </Box>
+
+            <BasicModal open={modalOpen} toggleModal={onToggleModal}>
+                <Typography>Deseja prosseguir com a ação?</Typography>
+                <LoadingButton
+                    loading={loading}
+                    variant="contained"
+                    sx={styles.modalButton}
+                    onClick={onChangingUserStatus}
+                >
+                    Continuar
+                </LoadingButton>
+            </BasicModal>
 
             {responseComponent}
         </Box>

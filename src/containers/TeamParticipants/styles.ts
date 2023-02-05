@@ -10,6 +10,9 @@ const styles = {
     },
     label: {
         marginBottom: 1
+    },
+    modalButton: {
+        marginTop: 5
     }
 };
 

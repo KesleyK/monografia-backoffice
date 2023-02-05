@@ -1,4 +1,5 @@
 export * from "./Alert";
+export * from "./BasicModal";
 export * from "./BasicTable";
 export * from "./BasicTabs";
 export * from "./CheckboxList";
