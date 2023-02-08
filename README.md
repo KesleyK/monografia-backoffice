@@ -1,46 +1,39 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Aplicação Web Algoritmia
 
-## Available Scripts
+Autores:
 
-In the project directory, you can run:
+* Kesley Kenny Vasques Guimarães
+* Pedro Henrique de Brito Agnes
 
-### `npm start`
+Aplicativo web desenvolvido com a tecnologia `react`, fazendo o papel do *Back Office* do projeto de [TCC](https://github.com/Pedenite/Monografia) da dupla. É complementado com o [*Front Office*](https://github.com/KesleyK/monografia-app).
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Rodar local
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Para rodar local, é necessário ter o `npm` e o `node.js` instalados. Segue a documentação oficial de instalação do npm: https://docs.npmjs.com/downloading-and-installing-node-js-and-npm
 
-### `npm test`
+Em seguida, deve-se rodar o comando de instalação de dependências no projeto:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```sh
+npm install
+```
 
-### `npm run build`
+Desta forma, o projeto estará pronto para executar, mas para que seja possível acessar todas as funcionalidades, é necessário configurar uma instância do firebase. Para isso, deve-se criar um arquivo chamado `.env` na raíz do repositório. O conteúdo deve seguir o exemplo descrito no arquivo `.env.example` adicionando as chaves obtidas da instância criada do firebase em cada campo (após o `=`):
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```sh
+REACT_APP_FIREBASE_API_KEY=
+REACT_APP_FIREBASE_AUTH_DOMAIN=
+REACT_APP_FIREBASE_PROJECT_ID=
+REACT_APP_FIREBASE_STORAGE_BUCKET=
+REACT_APP_FIREBASE_MESSAGING_SENDER_ID=
+REACT_APP_FIREBASE_APP_ID=
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Por fim, basta executar o aplicativo com o seguinte comando:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```sh
+npm start
+```
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+Deste modo, a aplicação web deverá ser inicializada, podendo ser acessada por meio da url http://localhost:3000.
+> **Note:** Se outra aplicação já estiver utilizando essa porta, o comando de inicialização irá sugerir que escolha outra porta. Fique atento ao terminal caso isso ocorra.

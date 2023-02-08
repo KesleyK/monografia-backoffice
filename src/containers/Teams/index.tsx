@@ -22,6 +22,7 @@ export function Teams() {
         retrieveUserInfo().then((user) => {
             TeamsCollection.getAll(user.email).then((values) => {
                 setTeams(parseCollection(values));
+                setTableLoading(false);
             });
         });
     }, []);
