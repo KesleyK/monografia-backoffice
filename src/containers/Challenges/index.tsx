@@ -86,7 +86,7 @@ export function Challenges() {
                 await SubtopicsCollection.insertChallenge(subtopic.id, newChallengeId);
 
                 const updatedChallenges = [...challenges];
-                updatedChallenges.push(formData);
+                updatedChallenges.push({ ...formData, id: newChallengeId });
                 setChallenges(updatedChallenges);
             },
             successMessage: "Desafio adicionado com sucesso."
