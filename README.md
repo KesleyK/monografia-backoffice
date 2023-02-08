@@ -1,5 +1,5 @@
 
-# Aplicativo Algoritmia
+# Aplicação Web Algoritmia
 
 Autores:
 
